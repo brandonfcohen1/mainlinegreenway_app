@@ -6,20 +6,30 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "mongod --dbpath ~/mongodb-data"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.4.1",
+    "@turf/helpers": "^6.5.0",
     "@types/node": "20.1.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
+    "mapbox-gl": "^2.14.1",
+    "mongodb": "^5.4.0",
     "next": "13.4.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-map-gl": "^7.0.23",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/mapbox__mapbox-gl-draw": "^1.3.3"
   }
 }
