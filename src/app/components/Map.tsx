@@ -12,9 +12,10 @@ import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import axios from "axios";
-import { Feature, AllGeoJSON } from "@turf/helpers";
+import { Feature, AllGeoJSON, Geometry, Point } from "@turf/helpers";
 import { MLGMapping } from "../utils/mappings";
 import { Legend } from "./Legend";
+import { CustomDataEntryPopup } from "./CustomDataEntryPopup";
 
 const submitDrawing = async (
   drawing: Feature,
@@ -56,6 +57,26 @@ export const Map = () => {
     useState<Feature<AllGeoJSON> | null>(null);
   const [cursorStyle, setCursorStyle] = useState("default");
   const [isLayerReady, setIsLayerReady] = useState(false);
+  const [showDataEntryPopup, setShowDataEntryPopup] = useState(false);
+  const [dataEntryLatLng, setDataEntryLatLng] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
+  const handleDataEntryCloseButtonClick = () => {
+    if (draw) {
+      // Remove any drawn features
+      const drawnFeatures = draw.getAll();
+      if (drawnFeatures.features.length > 0) {
+        drawnFeatures.features.forEach((feature) => {
+          if (typeof feature.id === "string") {
+            draw.delete(feature.id);
+          }
+        });
+      }
+    }
+    setShowPopup(false);
+  };
 
   const onMapLoad = (mapInstance: MapboxGlMap) => {
     setMap(mapInstance);
@@ -63,9 +84,7 @@ export const Map = () => {
     const drawInstance = new MapboxDraw({
       displayControlsDefault: false,
       controls: {
-        point: true,
-        line_string: true,
-        polygon: true,
+        point: true, // Only enable the point tool
         trash: true,
       },
     });
@@ -79,24 +98,27 @@ export const Map = () => {
       }
     });
 
-    // Add a listener for the drawing events
     mapInstance.on("draw.create", async (e: any) => {
       const drawing = e.features[0] as Feature;
+      const pointGeometry = drawing.geometry as Point;
 
-      // Show a popup to get the comment and contact information
-      const comment = prompt("Please enter a comment for this drawing:");
-      const contactInfo = prompt(
-        "Please enter your contact information (optional):"
-      );
+      setDataEntryLatLng({
+        lat: pointGeometry.coordinates[1],
+        lng: pointGeometry.coordinates[0],
+      });
+      setShowDataEntryPopup(true);
+      setShowPopup(false); // Add this line
 
-      // Submit the drawing and comment to the backend
-      if (comment) {
-        await submitDrawing(drawing, comment, contactInfo);
-      }
-
-      // Remove the drawing from the map
       if (typeof drawing.id === "string") {
         drawInstance.delete(drawing.id);
+      }
+    });
+
+    mapInstance.on("draw.modechange", (e: any) => {
+      if (e.mode === "draw_point") {
+        mapInstance.getCanvas().style.cursor = "crosshair";
+      } else {
+        mapInstance.getCanvas().style.cursor = "default";
       }
     });
 
@@ -107,6 +129,33 @@ export const Map = () => {
     mapInstance.on("mouseleave", "mainlinegreenway-layer", () => {
       mapInstance.getCanvas().style.cursor = "default";
     });
+  };
+
+  const handleDataEntrySubmit = async (
+    comment: string,
+    contactInfo: string | null
+  ) => {
+    if (selectedFeature) {
+      await submitDrawing(
+        selectedFeature as unknown as Feature<Geometry>,
+        comment,
+        contactInfo
+      );
+    }
+
+    if (draw) {
+      // Remove any drawn features
+      const drawnFeatures = draw.getAll();
+      if (drawnFeatures.features.length > 0) {
+        drawnFeatures.features.forEach((feature) => {
+          if (typeof feature.id === "string") {
+            draw.delete(feature.id);
+          }
+        });
+      }
+    }
+
+    setShowPopup(false);
   };
 
   const onFeatureClick = (e: any) => {
@@ -201,6 +250,15 @@ export const Map = () => {
             </p>
           </div>
         </Popup>
+      )}
+      {showDataEntryPopup && dataEntryLatLng && (
+        <CustomDataEntryPopup
+          latitude={dataEntryLatLng.lat}
+          longitude={dataEntryLatLng.lng}
+          onClose={() => setShowDataEntryPopup(false)}
+          onSubmit={handleDataEntrySubmit}
+          onCloseButtonClick={handleDataEntryCloseButtonClick}
+        />
       )}
       <NavigationControl showCompass={false} />
       <Legend />
