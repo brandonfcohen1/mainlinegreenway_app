@@ -1,22 +1,15 @@
+export const LTSMapping = {
+  "LTS 1": "#348939",
+  "LTS 2": "#FDBF02",
+  "LTS 3": "#FE7E03",
+  "LTS 4": "#9B1D1E",
+  "Off-road trail/path": "#348939",
+};
+
 export const MLGMapping = {
-  "Mainline Greenway": {
-    style: { backgroundColor: "#023020", color: "white" },
-    description: "Main Line Greenway",
-  },
-  "Existing City Avenue Trails": {
-    style: { backgroundColor: "#8B008B", color: "white" },
-    description: "Existing City Avenue Trails",
-  },
-  "Potential Trail Links": {
-    style: { backgroundColor: "#1E90FF", color: "white" },
-    description: "Potential Trail Links",
-  },
-  "Proposed City Avenue Trails": {
-    style: { backgroundColor: "#FFC300", color: "black" },
-    description: "Proposed City Avenue Trails",
-  },
-  "Under Construction": {
-    style: { backgroundColor: "#FF5733", color: "white" },
-    description: "Under Construction",
-  },
+  "Mainline Greenway": "#023020",
+  "Existing City Avenue Trails": "#8B008B",
+  "Potential Trail Links": "#1E90FF",
+  "Proposed City Avenue Trails": "#FFC300",
+  "Under Construction": "#FF5733",
 };

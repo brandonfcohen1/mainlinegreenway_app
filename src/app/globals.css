@@ -18,66 +18,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-.legend {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 3px;
-  z-index: 10;
-  color: #000;
-}
-
-.legend-key {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
-  content: " ";
-}
-
-.popup-text {
-  color: #000;
-}
-
-.popup-data-entry {
-  color: #333;
-}
-
-.popup-data-entry label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.popup-data-entry input {
-  display: block;
-  margin-bottom: 10px;
-  padding: 5px;
-  background-color: #fff;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.popup-data-entry button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 4px;
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
