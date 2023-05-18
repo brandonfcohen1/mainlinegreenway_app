@@ -1,12 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient } from "mongodb";
 import axios from "axios";
+import sgMail from "@sendgrid/mail"; // Import SendGrid Mail
 
 const mongoConnectionString =
   process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017";
 
+sgMail.setApiKey(process.env.MLG_SENDGRID || ""); // Set SendGrid API Key
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(req);
   if (req.method === "POST") {
     // Extract the drawing and comment data from the request body
     const { drawing, comment, contactInfo } = req.body;
@@ -24,11 +26,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       createdAt: new Date(),
     });
 
-    // Send a Slack notification
-    // const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
-    // await axios.post(slackWebhookUrl!, {
-    //   text: `New drawing submitted: ${comment}`,
-    // });
+    // Send an email notification using SendGrid
+    const msg = {
+      to: "brandon.f.cohen@gmail.com",
+      from: "mainlinegreenwayapp@gmail.com",
+      subject: "New MLG comment",
+      html: `New drawing submitted: ${comment}<br><br>Contact info: ${contactInfo}<br><br>Location: ${JSON.stringify(
+        drawing.coordinates
+      )}`,
+    };
+
+    await sgMail.send(msg);
 
     // Close the database connection and respond to the API request
     client.close();
