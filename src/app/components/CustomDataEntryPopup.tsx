@@ -67,8 +67,11 @@ export const CustomDataEntryPopup: React.FC<CustomDataEntryPopupProps> = ({
             onChange={(e) => setContactInfo(e.target.value)}
           />
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded-md"
+            className={`px-4 py-2 rounded-md text-white ${
+              comment ? "bg-green-500" : "bg-gray-500 cursor-not-allowed"
+            }`}
             onClick={handleSubmit}
+            disabled={!comment}
           >
             Submit
           </button>
