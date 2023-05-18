@@ -1,4 +1,3 @@
-// FeaturePopup.tsx
 import React from "react";
 import { Popup } from "react-map-gl";
 
@@ -6,7 +5,7 @@ interface FeaturePopupProps {
   latitude: number;
   longitude: number;
   onClose: () => void;
-  clickedGeoJSONFeature: any; // Update this type according to your data
+  clickedGeoJSONFeature: any;
 }
 
 interface PopupText {

@@ -92,7 +92,7 @@ export const Map = () => {
         lng: pointGeometry.coordinates[0],
       });
 
-      setShowDataEntryPopup(true); // Set this to true here
+      setShowDataEntryPopup(true);
       setShowPopup(false);
       setShowAlert(false);
       setEditingMode(false);
@@ -110,7 +110,6 @@ export const Map = () => {
       }
     });
 
-    // Add event listeners for mousemove and mouseleave
     mapInstance.on(
       "mousemove",
       ["mainlinegreenway-layer", "traffic-stress-layer"],
@@ -381,7 +380,7 @@ export const Map = () => {
           onClose={() => setShowDataEntryPopup(false)}
           onSubmit={handleDataEntrySubmit}
           onCloseButtonClick={handleDataEntryCloseButtonClick}
-          onCancel={handleDataEntryCancel} // Add this line
+          onCancel={handleDataEntryCancel}
         />
       )}
       <NavigationControl showCompass={false} />
@@ -401,7 +400,6 @@ export const Map = () => {
                 className="text-red-600"
                 size={30}
                 onClick={(e) => {
-                  // Prevent map click from being triggered
                   e.stopPropagation();
 
                   setPopupInfo({ lat: feedback.lat, lng: feedback.lng });

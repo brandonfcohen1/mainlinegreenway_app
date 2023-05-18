@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface LayerControlProps {
   onStyleChange: (style: string) => void;
   onTrafficStressLayerToggle: (isVisible: boolean) => void;
