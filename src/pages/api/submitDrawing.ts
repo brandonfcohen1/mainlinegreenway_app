@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { MongoClient } from "mongodb";
-import axios from "axios";
+//import { MongoClient } from "mongodb";
 import sgMail from "@sendgrid/mail"; // Import SendGrid Mail
 
 const mongoConnectionString =
@@ -13,18 +12,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Extract the drawing and comment data from the request body
     const { drawing, comment, contactInfo } = req.body;
 
-    // Connect to the MongoDB database
-    const client = await MongoClient.connect(mongoConnectionString);
-    const db = client.db("mainlinegreenway");
-    const drawingsCollection = db.collection("drawings");
+    // // Connect to the MongoDB database
+    // const client = await MongoClient.connect(mongoConnectionString);
+    // const db = client.db("mainlinegreenway");
+    // const drawingsCollection = db.collection("drawings");
 
-    // Insert the drawing and comment data into the database
-    await drawingsCollection.insertOne({
-      drawing,
-      comment,
-      contactInfo,
-      createdAt: new Date(),
-    });
+    // // Insert the drawing and comment data into the database
+    // await drawingsCollection.insertOne({
+    //   drawing,
+    //   comment,
+    //   contactInfo,
+    //   createdAt: new Date(),
+    // });
 
     // Send an email notification using SendGrid
     const msg = {
@@ -39,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await sgMail.send(msg);
 
     // Close the database connection and respond to the API request
-    client.close();
+    //client.close();
     res.status(200).json({ message: "Drawing submitted successfully" });
   } else {
     res.status(405).json({ message: "Method not allowed" });
