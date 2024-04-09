@@ -31,7 +31,7 @@ export const LayerControl: React.FC<LayerControlProps> = ({
             checked={trafficStressLayerVisible}
             onChange={(e) => onTrafficStressLayerToggle(e.target.checked)}
           />
-          <span className="ml-1">Show TrafficStress Stress</span>
+          <span className="ml-1">Show Traffic Stress</span>
         </label>
       </div>
     </div>
